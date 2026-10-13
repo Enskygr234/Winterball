@@ -1,0 +1,12 @@
+https://enskygr234.github.io -> tur.1/scoreboard?dates=20261013: durum=200 CORS=*
+https://enskygr234.github.io -> tur.1/standings: durum=200 CORS=*
+http://localhost:8080 -> tur.1/scoreboard?dates=20261013: durum=200 CORS=*
+http://localhost:8080 -> tur.1/standings: durum=200 CORS=*
+tarayıcı fetch (duz): 200
+tarayıcı fetch (no-store): 200
+tarayıcı kimliği: Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36
+bugün maç sayısı: 9
+ligler: Şampiyonlar Ligi
+dün maç sayısı: 27
+puan durumu satır: 18
+hatalar: []
