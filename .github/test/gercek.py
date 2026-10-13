@@ -8,9 +8,13 @@ rapor = []
 for origin in ["https://enskygr234.github.io", "http://localhost:8080"]:
     for u in ["https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/scoreboard?dates=20261012-20261014",
               "https://site.api.espn.com/apis/v2/sports/soccer/tur.1/standings"]:
-        r = urllib.request.urlopen(urllib.request.Request(u, headers={"Origin": origin, "User-Agent": "Mozilla/5.0"}), timeout=20)
-        rapor.append(f"{origin} -> {u.split('soccer/')[1]}: durum={r.status} CORS={r.headers.get('Access-Control-Allow-Origin')}")
+        try:
+            r = urllib.request.urlopen(urllib.request.Request(u, headers={"Origin": origin, "User-Agent": "Mozilla/5.0"}), timeout=20)
+            rapor.append(f"{origin} -> {u.split('soccer/')[1]}: durum={r.status} CORS={r.headers.get('Access-Control-Allow-Origin')}")
+        except Exception as hata:
+            rapor.append(f"{origin} -> {u.split('soccer/')[1]}: HATA {hata}")
 
+open(f"{out}/rapor.txt", "w").write("\n".join(rapor) + "\n(tarayıcı testi başlıyor)\n")
 with sync_playwright() as p:
     b = p.chromium.launch(args=['--disable-web-security'])
     pg = b.new_page(viewport={"width": 390, "height": 844}, device_scale_factor=2)
