@@ -42,7 +42,7 @@
     "Kazakhstan": "Kazakistan", "Armenia": "Ermenistan", "Cyprus": "Kıbrıs", "Israel": "İsrail", "Lithuania": "Litvanya",
     "Latvia": "Letonya", "Estonia": "Estonya", "Moldova": "Moldova", "Belarus": "Belarus", "Luxembourg": "Lüksemburg",
     "Malta": "Malta", "Andorra": "Andorra", "San Marino": "San Marino", "Liechtenstein": "Lihtenştayn", "Faroe Islands": "Faroe Adaları",
-    "Gibraltar": "Cebelitarık", "Bayern Munich": "Bayern Münih", "Inter Milan": "Inter", "AC Milan": "Milan"
+    "Gibraltar": "Cebelitarık", "Istanbul BB": "Başakşehir", "Genclerbirli": "Gençlerbirliği", "Erzurum": "Erzurumspor", "Rizespor": "Çaykur Rizespor", "Eyupspor": "Eyüpspor", "Karagumruk": "Karagümrük", "Fenerbahce SK": "Fenerbahçe", "Besiktas JK": "Beşiktaş", "Bayern Munich": "Bayern Münih", "Inter Milan": "Inter", "AC Milan": "Milan"
   };
   const trName = n => TR_NAMES[n] || n;
 
@@ -519,7 +519,8 @@
           <td>${stat(e, "gamesPlayed")}</td><td>${stat(e, "wins")}</td><td>${stat(e, "ties")}</td><td>${stat(e, "losses")}</td>
           <td>${sv(e, "pointDifferential")}</td><td class="pts">${stat(e, "points")}</td></tr>`;
       }).join("");
-      return `<div class="card">${groups.length > 1 || g.name ? `<h3>${esc(g.name)}</h3>` : ""}
+      const gname = (g.name || "").replace(/Turkish Super Lig/i, "Süper Lig").replace(/Turkish 1\. Lig|TFF 1\. Lig/i, "1. Lig").replace(/English Premier League/i, "Premier Lig").replace(/Spanish LALIGA|Spanish La Liga/i, "La Liga").replace(/Italian Serie A/i, "Serie A").replace(/German Bundesliga/i, "Bundesliga").replace(/French Ligue 1/i, "Ligue 1").replace(/UEFA Champions League/i, "Şampiyonlar Ligi").replace(/UEFA Europa League/i, "Avrupa Ligi").replace(/UEFA Conference League/i, "Konferans Ligi");
+      return `<div class="card">${groups.length > 1 || g.name ? `<h3>${esc(gname)}</h3>` : ""}
         <table class="table"><thead><tr><th>#</th><th class="tm">Takım</th><th>O</th><th>G</th><th>B</th><th>M</th><th>AV</th><th>P</th></tr></thead><tbody>${rows}</tbody></table>
       </div>`;
     }).join("");
@@ -530,7 +531,7 @@
   function sv(e, name) { const s = (e.stats || []).find(x => x.name === name); return s ? s.displayValue : ""; }
   function trNote(d) {
     return d.replace(/Champions League/i, "Şampiyonlar Ligi").replace(/Europa Conference League|Conference League/i, "Konferans Ligi")
-      .replace(/Europa League/i, "Avrupa Ligi").replace(/Relegation/i, "Küme düşme").replace(/Promotion/i, "Üst lig")
+      .replace(/Europa League/i, "Avrupa Ligi").replace(/Relegat\w*/i, "Küme düşme").replace(/Promotion/i, "Üst lig")
       .replace(/Qualifying|qualifiers/i, "eleme").replace(/League Phase/i, "lig aşaması").replace(/Playoff(s)?/i, "play-off")
       .replace(/Round of 16/i, "son 16").replace(/Knockout/i, "eleme turu");
   }
