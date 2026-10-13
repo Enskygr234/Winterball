@@ -22,7 +22,7 @@ jobs:
           mkdir -p sonuc
           python -m http.server 8080 >/dev/null 2>&1 &
           sleep 1
-          python .github/test/gercek.py sonuc
+          xvfb-run -a python .github/test/gercek.py sonuc
       - name: Sonucu test-sonuc dalına yaz
         if: always()
         run: |

@@ -16,12 +16,18 @@ for origin in ["https://enskygr234.github.io", "http://localhost:8080"]:
 
 open(f"{out}/rapor.txt", "w").write("\n".join(rapor) + "\n(tarayıcı testi başlıyor)\n")
 with sync_playwright() as p:
-    b = p.chromium.launch(args=['--disable-web-security'])
+    b = p.chromium.launch(headless=False, args=['--disable-web-security'])
     pg = b.new_page(viewport={"width": 390, "height": 844}, device_scale_factor=2, is_mobile=True, has_touch=True,
         user_agent="Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36")
     hatalar = []
     pg.on("pageerror", lambda e: hatalar.append(str(e)))
-    pg.on("console", lambda m: m.type == "error" and hatalar.append(m.text))
+    pg.on("response", lambda r: r.status >= 400 and hatalar.append(f"{r.status} {r.url[:110]}"))
+    pg.goto("http://localhost:8080/manifest.json")
+    for ad, js in [("duz", "fetch(U).then(r=>r.status).catch(e=>'hata '+e)"),
+                   ("no-store", "fetch(U,{cache:'no-store'}).then(r=>r.status).catch(e=>'hata '+e)")]:
+        durum = pg.evaluate("U => " + js, "https://site.api.espn.com/apis/v2/sports/soccer/tur.1/standings")
+        rapor.append(f"tarayıcı fetch ({ad}): {durum}")
+    rapor.append("tarayıcı kimliği: " + pg.evaluate("navigator.userAgent"))
     pg.goto("http://localhost:8080/")
     pg.wait_for_selector(".match, .empty, .error", timeout=30000)
     pg.wait_for_timeout(1500)
@@ -44,7 +50,7 @@ with sync_playwright() as p:
     pg.wait_for_selector(".table, .error, .empty", timeout=20000); pg.wait_for_timeout(1500)
     pg.screenshot(path=f"{out}/5-puan.png", full_page=True)
     rapor.append(f"puan durumu satır: {pg.locator('.table tbody tr').count()}")
-    rapor.append("hatalar: " + json.dumps(hatalar, ensure_ascii=False))
+    rapor.append("hatalar: " + json.dumps(hatalar[:8], ensure_ascii=False))
     b.close()
 
 open(f"{out}/rapor.txt", "w").write("\n".join(rapor) + "\n")
