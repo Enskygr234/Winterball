@@ -6,7 +6,7 @@ rapor = []
 
 # ESPN tarayıcıdan erişime izin veriyor mu?
 for origin in ["https://enskygr234.github.io", "http://localhost:8080"]:
-    for u in ["https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/scoreboard?dates=20261012-20261014",
+    for u in ["https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/scoreboard?dates=20261013",
               "https://site.api.espn.com/apis/v2/sports/soccer/tur.1/standings"]:
         try:
             r = urllib.request.urlopen(urllib.request.Request(u, headers={"Origin": origin, "User-Agent": "Mozilla/5.0"}), timeout=20)
@@ -17,7 +17,8 @@ for origin in ["https://enskygr234.github.io", "http://localhost:8080"]:
 open(f"{out}/rapor.txt", "w").write("\n".join(rapor) + "\n(tarayıcı testi başlıyor)\n")
 with sync_playwright() as p:
     b = p.chromium.launch(args=['--disable-web-security'])
-    pg = b.new_page(viewport={"width": 390, "height": 844}, device_scale_factor=2)
+    pg = b.new_page(viewport={"width": 390, "height": 844}, device_scale_factor=2, is_mobile=True, has_touch=True,
+        user_agent="Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36")
     hatalar = []
     pg.on("pageerror", lambda e: hatalar.append(str(e)))
     pg.on("console", lambda m: m.type == "error" and hatalar.append(m.text))
@@ -28,7 +29,7 @@ with sync_playwright() as p:
     rapor.append(f"bugün maç sayısı: {pg.locator('.match').count()}")
     rapor.append("ligler: " + ", ".join(pg.locator(".league-head .name").all_inner_texts()))
     # Dün (biten maçlar) ve bir maçın detayı
-    pg.click(".date[data-d='-1']")
+    pg.click(".date[data-d='-2']")
     pg.wait_for_timeout(4000)
     pg.screenshot(path=f"{out}/2-dun.png")
     rapor.append(f"dün maç sayısı: {pg.locator('.match').count()}")

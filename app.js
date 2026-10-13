@@ -154,9 +154,15 @@
     const hit = cache.get(key);
     const isToday = sameDay(day, new Date());
     if (hit && (Date.now() - hit.at < (isToday ? 25000 : 300000))) return hit.data;
-    const range = `${ymd(addDays(day, -1))}-${ymd(addDays(day, 1))}`;
+    // ESPN günleri ABD saatine göre tutar; Türkiye'de gece yarısından sonraki maçlar bir önceki güne düşebilir.
+    // Bu yüzden seçili günü ve (gece maçları için) bir önceki günü de isteriz.
+    const days = [ymd(day), ymd(addDays(day, -1))];
     const results = await Promise.allSettled(LEAGUES.map(l =>
-      getJSON(`${API}${l.id}/scoreboard?dates=${range}`).then(j => ({ l, j }))));
+      Promise.allSettled(days.map(d => getJSON(`${API}${l.id}/scoreboard?dates=${d}`))).then(rs => {
+        const ok = rs.filter(r => r.status === "fulfilled").map(r => r.value);
+        if (!ok.length) throw new Error("yok");
+        return { l, j: { leagues: ok[0].leagues, events: ok.flatMap(x => x.events || []) } };
+      })));
     let ok = 0;
     const groups = [];
     for (const r of results) {
@@ -164,7 +170,8 @@
       ok++;
       const { l, j } = r.value;
       const lg = j.leagues && j.leagues[0];
-      const matches = (j.events || []).map(e => parseEvent(e, l.id)).filter(m => sameDay(m.date, day));
+      const seen = new Set();
+      const matches = (j.events || []).filter(e => !seen.has(e.id) && seen.add(e.id)).map(e => parseEvent(e, l.id)).filter(m => sameDay(m.date, day));
       if (matches.length) {
         matches.sort((a, b) => a.date - b.date);
         groups.push({ league: l, logo: lg && lg.logos && lg.logos[0] && lg.logos[0].href, matches });
