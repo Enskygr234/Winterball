@@ -232,7 +232,7 @@
 
   async function renderMatches(silent) {
     view = "maclar"; setTab("maclar");
-    setHeader(`<span class="logo">⚽</span> Ayaz Skor`, false);
+    setHeader(`<span class="logo">⚽</span> Winterball`, false);
     if (!silent) {
       app.innerHTML = `${dateStrip()}<div class="filters" id="filters"></div><div id="list"><div class="skeleton">${'<div class="sk"></div>'.repeat(8)}</div></div>`;
       bindDates();

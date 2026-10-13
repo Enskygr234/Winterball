@@ -29,7 +29,7 @@ jobs:
           npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
           mkdir www
           cp -r ../index.html ../style.css ../app.js ../manifest.json ../icons www/
-          npx cap init "Ayaz Skor" com.enskygr234.ayazskor --web-dir www
+          npx cap init "Winterball" com.enskygr234.winterball --web-dir www
           # Maç verisini uygulamanın kendi ağ katmanından çeksin (tarayıcı kısıtlamalarına takılmasın)
           node -e 'const f="capacitor.config.json";const c=JSON.parse(require("fs").readFileSync(f));c.plugins={CapacitorHttp:{enabled:true}};c.android={backgroundColor:"#0b111b"};require("fs").writeFileSync(f,JSON.stringify(c,null,2))'
           cat capacitor.config.json
@@ -49,16 +49,16 @@ jobs:
           cd apk/android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
-          cp app/build/outputs/apk/debug/app-debug.apk ../../AyazSkor.apk
+          cp app/build/outputs/apk/debug/app-debug.apk ../../Winterball.apk
       - name: Yayına yükle
         uses: softprops/action-gh-release@v2
         with:
           tag_name: son-surum
-          name: Ayaz Skor (son sürüm)
+          name: Winterball (son sürüm)
           body: |
-            Telefonuna kurmak için **AyazSkor.apk** dosyasını indir ve aç.
+            Telefonuna kurmak için **Winterball.apk** dosyasını indir ve aç.
             İlk kurulumda "bilinmeyen kaynaklara izin ver" demen gerekebilir.
             Derleme: ${{ github.sha }}
-          files: AyazSkor.apk
+          files: Winterball.apk
           make_latest: true
           overwrite_files: true

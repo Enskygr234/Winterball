@@ -1,10 +1,10 @@
 <div align="center">
 
-# ⚽ Ayaz Skor
+# ⚽ Winterball
 
 **Canlı skorlar, maç olayları ve puan durumları, telefonuna özel.**
 
-[![APK indir](https://img.shields.io/badge/⬇_APK_indir-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](../../releases/download/son-surum/AyazSkor.apk)
+[![APK indir](https://img.shields.io/badge/⬇_APK_indir-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](../../releases/download/son-surum/Winterball.apk)
 
 </div>
 
