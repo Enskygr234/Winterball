@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b111b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Ayaz Skor</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-btn" id="backBtn" aria-label="Geri" hidden>
+      <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <h1 id="title"><span class="logo">⚽</span> Ayaz Skor</h1>
+    <span class="live-badge" id="liveBadge" hidden></span>
+    <button class="icon-btn" id="refreshBtn" aria-label="Yenile">
+      <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/></svg>
+    </button>
+  </header>
+
+  <main id="app"></main>
+
+  <nav class="tabbar">
+    <button data-tab="maclar" class="active">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/></svg>
+      <span>Maçlar</span>
+    </button>
+    <button data-tab="puan">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16M9 4v16"/></svg>
+      <span>Puan Durumu</span>
+    </button>
+    <button data-tab="takimlarim">
+      <svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>
+      <span>Takımlarım</span>
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>

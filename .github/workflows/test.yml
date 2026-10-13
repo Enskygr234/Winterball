@@ -1,0 +1,34 @@
+# Uygulamayı gerçek maç verisiyle açar, ekran görüntüsü alır ve sonucu "test-sonuc" dalına yazar
+name: Gerçek veriyle test
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths: ["app.js", ".github/test/**", ".github/workflows/test.yml"]
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Playwright kur
+        run: pip install playwright && python -m playwright install --with-deps chromium
+      - name: Test et
+        run: |
+          mkdir -p sonuc
+          python -m http.server 8080 >/dev/null 2>&1 &
+          sleep 1
+          python .github/test/gercek.py sonuc
+      - name: Sonucu test-sonuc dalına yaz
+        if: always()
+        run: |
+          cd sonuc
+          git init -q -b test-sonuc
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -qm "Test sonucu $(date -u +%F_%T)"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" test-sonuc

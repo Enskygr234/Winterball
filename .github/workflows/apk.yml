@@ -1,0 +1,64 @@
+# Uygulamayı Android APK'ya çevirir ve "son-surum" yayınına yükler (indirme linki hep aynı kalır)
+name: APK oluştur
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - "README.md"
+      - ".github/test/**"
+      - ".github/workflows/test.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Android projesini hazırla
+        run: |
+          mkdir apk && cd apk
+          npm init -y > /dev/null
+          npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
+          mkdir www
+          cp -r ../index.html ../style.css ../app.js ../manifest.json ../icons www/
+          npx cap init "Ayaz Skor" com.enskygr234.ayazskor --web-dir www
+          # Maç verisini uygulamanın kendi ağ katmanından çeksin (tarayıcı kısıtlamalarına takılmasın)
+          node -e 'const f="capacitor.config.json";const c=JSON.parse(require("fs").readFileSync(f));c.plugins={CapacitorHttp:{enabled:true}};c.android={backgroundColor:"#0b111b"};require("fs").writeFileSync(f,JSON.stringify(c,null,2))'
+          cat capacitor.config.json
+          npx cap add android
+      - name: Dikey ekran ve simge
+        run: |
+          cd apk/android/app/src/main
+          sed -i 's/android:name=".MainActivity"/android:name=".MainActivity" android:screenOrientation="portrait"/' AndroidManifest.xml
+          cd res
+          rm -rf mipmap-anydpi-v26
+          for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            cp "$GITHUB_WORKSPACE/.github/android-icons/$d.png" "mipmap-$d/ic_launcher.png"
+            cp "mipmap-$d/ic_launcher.png" "mipmap-$d/ic_launcher_round.png"
+          done
+      - name: APK derle
+        run: |
+          cd apk/android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+          cp app/build/outputs/apk/debug/app-debug.apk ../../AyazSkor.apk
+      - name: Yayına yükle
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: son-surum
+          name: Ayaz Skor (son sürüm)
+          body: |
+            Telefonuna kurmak için **AyazSkor.apk** dosyasını indir ve aç.
+            İlk kurulumda "bilinmeyen kaynaklara izin ver" demen gerekebilir.
+            Derleme: ${{ github.sha }}
+          files: AyazSkor.apk
+          make_latest: true
+          overwrite_files: true
