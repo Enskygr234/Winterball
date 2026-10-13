@@ -8,6 +8,8 @@
 
 </div>
 
+<img src="docs/kapak.png" alt="Winterball ekranları" width="100%">
+
 ## Neler var?
 
 - **Maçlar:** Dünden haftaya kadar her günün maçları, liglere göre gruplu. Canlı maçlarda dakika ve skor 30 saniyede bir kendiliğinden yenilenir.
