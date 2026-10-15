@@ -8,6 +8,18 @@
 
 </div>
 
+<!-- ENS:TANITIM -->
+## 🎬 Tanıtım
+
+<div align="center">
+
+<a href="docs/tanitim.mp4"><img src="docs/tanitim.gif" width="720" alt="Winterball tanıtım videosu"></a>
+
+<sub>Tam kalitede izlemek için görsele tıkla · MP4, 37 saniye</sub>
+
+</div>
+<!-- /ENS:TANITIM -->
+
 <img src="docs/kapak.png" alt="Winterball ekranları" width="100%">
 
 ## Neler var?
@@ -32,6 +44,18 @@ Maç verileri ESPN'in herkese açık skor servisinden gelir; hesap ya da anahtar
 - web sürümünü GitHub Pages'te yayınlar,
 - uygulamayı gerçek veriyle açıp ekran görüntülerini `test-sonuc` dalına kaydeder.
 
+<!-- ENS:ALT -->
 ---
 
-<div align="center">❄️ <a href="https://github.com/Enskygr234">Enskygr234</a> · Kış gelir, kod yazılır.</div>
+<div align="center">
+
+**❄️ ENS Developer'ın diğer projeleri**
+
+📱 Telefon: [GolHaber](https://github.com/Enskygr234/golhaber) · [Yemek Tarifleri](https://github.com/Enskygr234/ensdewloper.github.io/tree/main/tarifler)
+
+[🌐 Bütün projeler](https://enskygr234.github.io/ensdewloper.github.io/) · [👤 GitHub profilim](https://github.com/Enskygr234)
+
+<sub>Kış gelir, kod yazılır.</sub>
+
+</div>
+<!-- /ENS:ALT -->
