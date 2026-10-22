@@ -1,0 +1,5 @@
+https://enskygr234.github.io -> tur.1/scoreboard?dates=20261013: durum=200 CORS=*
+https://enskygr234.github.io -> tur.1/standings: durum=200 CORS=*
+http://localhost:8080 -> tur.1/scoreboard?dates=20261013: durum=200 CORS=*
+http://localhost:8080 -> tur.1/standings: durum=200 CORS=*
+(tarayıcı testi başlıyor)
