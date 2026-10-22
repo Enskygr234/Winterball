@@ -76,7 +76,23 @@
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* yer yok */ } }
   };
   let favs = store.get("skor.favs", {}); // takım id → {id, name, logo, league}
-  const saveFavs = () => store.set("skor.favs", favs);
+  const saveFavs = () => { store.set("skor.favs", favs); syncWidget(); };
+
+  // Ana ekran widget'ı (yalnızca Android uygulamasında): gösterilecek takımı yerel tercihlere yazarız
+  const Prefs = (() => {
+    const C = window.Capacitor;
+    if (!C || !C.isNativePlatform || !C.isNativePlatform()) return null;
+    try { return (C.Plugins && C.Plugins.Preferences) || (C.registerPlugin && C.registerPlugin("Preferences")) || null; } catch { return null; }
+  })();
+  let widgetTeam = store.get("skor.widget", null); // takım id
+  const widgetPick = () => favs[widgetTeam] || Object.values(favs)[0] || null;
+  function syncWidget() {
+    if (!Prefs) return;
+    const t = widgetPick();
+    const p = t ? Prefs.set({ key: "widget.team", value: JSON.stringify({ id: t.id, name: t.name, league: t.league || "tur.1", logo: t.logo || "" }) })
+      : Prefs.remove({ key: "widget.team" });
+    Promise.resolve(p).catch(() => {});
+  }
   const isFav = id => !!favs[id];
 
   function toast(msg, ms = 2600) {
@@ -560,10 +576,15 @@
       app.innerHTML = `<div class="empty"><span class="big">⭐</span>Henüz favori takımın yok.<br>Bir maçın detayına girip takımın altındaki <b>☆ Favorile</b> butonuna dokun.<br><br>Favori takımın gol attığında uygulama açıksa seni uyarırım.</div>`;
       return;
     }
+    const wt = widgetPick();
     app.innerHTML = `<div class="card" style="margin-top:10px"><h3>Favori takımlar</h3>${list.map(t => `
-      <div class="fav-team">${logo(t.logo, t.name)}<b>${esc(t.name)}</b><button class="star-btn on" data-id="${esc(t.id)}">★ Çıkar</button></div>`).join("")}</div>
+      <div class="fav-team">${logo(t.logo, t.name)}<b>${esc(t.name)}</b>${Prefs ? `<button class="star-btn wb ${wt && wt.id === t.id ? "on" : ""}" data-w="${esc(t.id)}">📱 ${wt && wt.id === t.id ? "Widget'ta" : "Widget"}</button>` : ""}<button class="star-btn on" data-id="${esc(t.id)}">★ Çıkar</button></div>`).join("")}</div>
+      ${Prefs ? `<div class="hint">📱 <b>Ana ekran widget'ı:</b> Ana ekranda boş bir yere basılı tut → <b>Widget'lar</b> → <b>Winterball</b>. Widget'ta seçtiğin takımın canlı, son ya da sıradaki maçı görünür.</div>` : ""}
       <div id="favMatches"><div class="skeleton">${'<div class="sk"></div>'.repeat(4)}</div></div>`;
-    app.querySelectorAll(".fav-team .star-btn").forEach(b => { b.onclick = () => { delete favs[b.dataset.id]; saveFavs(); renderFavs(); }; });
+    app.querySelectorAll(".fav-team .star-btn[data-id]").forEach(b => { b.onclick = () => { delete favs[b.dataset.id]; saveFavs(); renderFavs(); }; });
+    app.querySelectorAll(".fav-team .star-btn[data-w]").forEach(b => {
+      b.onclick = () => { widgetTeam = b.dataset.w; store.set("skor.widget", widgetTeam); syncWidget(); toast(`📱 Widget'ta artık ${favs[widgetTeam].name} görünecek`); renderFavs(); };
+    });
 
     // Her favori takımın son ve sıradaki maçları
     spinning(true);
@@ -602,6 +623,7 @@
   }
   window.addEventListener("hashchange", () => { detailTab = location.hash.startsWith("#/mac/") ? detailTab : "olaylar"; route(); });
   route();
+  syncWidget();
 
   if ("serviceWorker" in navigator && location.protocol === "https:" && !window.Capacitor) {
     navigator.serviceWorker.register("sw.js").catch(() => {});

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wb_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wb_bg"
+    android:orientation="vertical"
+    android:paddingStart="14dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/wb_league"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="⚽ Winterball"
+            android:textColor="#8A9AB3"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/wb_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="#8A9AB3"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wb_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/wb_home_logo"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/wb_home_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="#EAF1FB"
+                android:textSize="13sp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/wb_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="84dp"
+            android:gravity="center"
+            android:text="–"
+            android:textColor="#EAF1FB"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/wb_away_logo"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/wb_away_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="#EAF1FB"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/wb_msg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Yükleniyor…"
+        android:textColor="#EAF1FB"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/wb_updated"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="#5E6E86"
+            android:textSize="10sp" />
+        <TextView
+            android:id="@+id/wb_refresh"
+            android:layout_width="34dp"
+            android:layout_height="28dp"
+            android:gravity="center"
+            android:text="↻"
+            android:textColor="#22C55E"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>

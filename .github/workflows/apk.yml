@@ -26,7 +26,7 @@ jobs:
         run: |
           mkdir apk && cd apk
           npm init -y > /dev/null
-          npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
+          npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7 @capacitor/preferences@7
           mkdir www
           cp -r ../index.html ../style.css ../app.js ../manifest.json ../icons www/
           npx cap init "Winterball" com.enskygr234.winterball --web-dir www
@@ -44,6 +44,21 @@ jobs:
             cp "$GITHUB_WORKSPACE/.github/android-icons/$d.png" "mipmap-$d/ic_launcher.png"
             cp "mipmap-$d/ic_launcher.png" "mipmap-$d/ic_launcher_round.png"
           done
+      - name: Ana ekran widget'ı
+        run: |
+          W="$GITHUB_WORKSPACE/.github/android-widget"
+          cd apk/android/app/src/main
+          cp "$W"/java/*.java java/com/enskygr234/winterball/
+          cp -r "$W"/res/. res/
+          node -e '
+            const fs=require("fs"),f="AndroidManifest.xml";let m=fs.readFileSync(f,"utf8");
+            const r=`<receiver android:name=".WinterballWidget" android:exported="false" android:label="Winterball skor">
+                <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+                <meta-data android:name="android.appwidget.provider" android:resource="@xml/winterball_widget_info" />
+            </receiver>
+            `;
+            m=m.replace("</application>", r+"</application>");fs.writeFileSync(f,m);'
+          grep -n "WinterballWidget" AndroidManifest.xml
       - name: APK derle
         run: |
           cd apk/android

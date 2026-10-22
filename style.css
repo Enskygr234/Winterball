@@ -122,6 +122,7 @@ main { max-width: 680px; margin: 0 auto; }
 .sb .status.live { color: var(--live); }
 .star-btn { border: 1px solid var(--line); background: transparent; border-radius: 99px; padding: 3px 9px; font-size: 12px; color: var(--muted); display: inline-flex; gap: 4px; align-items: center; }
 .star-btn.on { color: var(--star); border-color: var(--star); }
+.star-btn.wb.on { color: var(--accent); border-color: var(--accent); }
 .venue { text-align: center; color: var(--muted); font-size: 12px; margin-top: 10px; }
 
 .seg { display: flex; gap: 6px; padding: 10px; position: sticky; top: calc(54px + var(--safe-top)); background: var(--bg); z-index: 10; }
